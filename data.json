@@ -182,12 +182,12 @@
   "certificates": [
     {
       "id": "c1",
-      "title": "Full Stack Web Development",
-      "issuer": "Udemy / Angela Yu",
-      "date": "DEC 2023",
+      "title": "SIH HACKATHON",
+      "issuer": "BBIT",
+      "date": "SEPT 2025",
       "icon": "🌐",
-      "badge": "UDEMY",
-      "img": ""
+      "badge": "SIH",
+      "img": "cert_1.png"
     },
     {
       "id": "c2",
