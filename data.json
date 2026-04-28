@@ -1,0 +1,412 @@
+{
+  "portfolio": {
+    "hero": {
+      "title": "Code with",
+      "accent": "Purpose",
+      "tagline": "SYSTEM ARCHITECT & DEVELOPER",
+      "desc1": "I'm Sreyan Mandal, a passionate developer and engineering student at BBIT (Budge Budge Institute of Technology). I build full-stack web applications, intelligent systems, and sleek digital experiences that merge clean code with powerful design.",
+      "desc2": "I specialize in scalable architectures and user-first design, ensuring every line of code serves a measurable purpose."
+    },
+    "sidebar": {
+      "name": "Sreyan Mandal",
+      "title": "FULL STACK DEV",
+      "email": "sreyanmandal83@gmail.com",
+      "institution": "BBIT, CSE",
+      "location": "West Bengal, India",
+      "github": "github.com/Sreyan5"
+    },
+    "skills": {
+      "sidebar": [
+        {
+          "name": "SYSTEM_DEV",
+          "percent": 70
+        },
+        {
+          "name": "CODE_CRAFT",
+          "percent": 60
+        },
+        {
+          "name": "NEURAL_UX",
+          "percent": 55
+        }
+      ],
+      "cards": [
+        {
+          "icon": "💻",
+          "title": "Full Stack Web Development",
+          "desc": "Build scalable, performant, full-stack web applications using modern frameworks and architectures — from pixel-perfect frontends to robust backend APIs.",
+          "skills": "HTML · CSS · JavaScript · React · Node.js · Express · MongoDB",
+          "percent": 85
+        },
+        {
+          "icon": "⚡",
+          "title": "Hardware & Product Building",
+          "desc": "Designing IoT prototypes and embedded systems — integrating sensors, microcontrollers, and real-time communication for smart product development.",
+          "skills": "Arduino · Sensors · IoT · Circuit Design · Prototyping",
+          "percent": 60
+        },
+        {
+          "icon": "🧠",
+          "title": "AI & Machine Learning",
+          "desc": "Training models, building classifiers, and exploring neural networks for intelligent automation and data-driven decision making.",
+          "skills": "Python · TensorFlow · Pandas · scikit-learn · NLP basics",
+          "percent": 45
+        },
+        {
+          "icon": "🗄️",
+          "title": "Database & Backend Architecture",
+          "desc": "Designing efficient database schemas, RESTful APIs, and server-side logic — ensuring data integrity, security, and scalability.",
+          "skills": "MongoDB · MySQL · REST API · Auth · Cloud Basics",
+          "percent": 65
+        }
+      ]
+    },
+    "projects": [
+      {
+        "title": "Holo-Keyboard",
+        "badge": "WebGL",
+        "desc": "3D holographic keyboard powered by hand-tracking and WebGL particle effects. Real-time gesture recognition meets futuristic UI.",
+        "tags": [
+          "Three.js",
+          "MediaPipe",
+          "WebGL",
+          "Canvas"
+        ],
+        "demo": "#",
+        "github": "#"
+      },
+      {
+        "title": "Smart Attendance System",
+        "badge": "IoT",
+        "desc": "RFID + fingerprint based attendance system with real-time dashboard and Excel export. Built for college lab environments.",
+        "tags": [
+          "Arduino",
+          "RFID",
+          "Flask",
+          "SQLite"
+        ],
+        "demo": "#",
+        "github": "#"
+      },
+      {
+        "title": "Portfolio v3.0",
+        "badge": "SELF",
+        "desc": "This very site — a single-file, admin-editable portfolio with cyberpunk aesthetics, canvas particles, and live CMS capabilities.",
+        "tags": [
+          "HTML",
+          "CSS",
+          "Vanilla JS",
+          "localStorage"
+        ],
+        "demo": "#",
+        "github": "#"
+      },
+      {
+        "title": "ChatBot AI",
+        "badge": "ML",
+        "desc": "Intent-classification chatbot using NLP pipeline. Custom-trained on domain-specific FAQ data with context-aware responses.",
+        "tags": [
+          "Python",
+          "NLTK",
+          "Flask",
+          "TF-IDF"
+        ],
+        "demo": "#",
+        "github": "#"
+      }
+    ],
+    "timeline": [
+      {
+        "period": "2022 — PRESENT",
+        "role": "B.Tech — Computer Science & Engineering",
+        "org": "Budge Budge Institute of Technology (BBIT), MAKAUT",
+        "desc": "Pursuing a Bachelor of Technology in CSE, specializing in software development, data structures, algorithms, OOP, database systems and modern web technologies. Active in coding clubs and hackathons.",
+        "tags": [
+          "Data Structures",
+          "DBMS",
+          "OOP",
+          "OS",
+          "Networks"
+        ]
+      },
+      {
+        "period": "2023",
+        "role": "Full Stack Web Development",
+        "org": "Self-Directed / Online Certification",
+        "desc": "Completed comprehensive courses in full-stack development — mastering HTML, CSS, JavaScript, React, Node.js, Express, and MongoDB — building multiple end-to-end projects.",
+        "tags": [
+          "React",
+          "Node.js",
+          "MongoDB",
+          "REST API"
+        ]
+      },
+      {
+        "period": "2024",
+        "role": "Hackathon Participant & Project Lead",
+        "org": "Inter-college Hackathons",
+        "desc": "Led teams in 24-48 hour hackathons, developing innovative tech solutions under pressure. Focused on problem decomposition, rapid prototyping, and clean delivery.",
+        "tags": [
+          "Team Lead",
+          "Problem Solving",
+          "Rapid Dev"
+        ]
+      },
+      {
+        "period": "2024 — 2025",
+        "role": "Open Source Contributor & Freelancer",
+        "org": "GitHub / Freelance Projects",
+        "desc": "Contributing to open source repositories and delivering freelance web development projects for clients — handling full-cycle development from design to deployment.",
+        "tags": [
+          "Open Source",
+          "Freelance",
+          "Deployment"
+        ]
+      }
+    ],
+    "blog": [
+      {
+        "cat": "DEV",
+        "title": "Why I Chose Full Stack Over Specialization",
+        "desc": "My journey from confusion to clarity — and why building both sides of the stack made me a better engineer.",
+        "date": "Mar 15, 2024"
+      },
+      {
+        "cat": "HARDWARE",
+        "title": "Building an RFID Attendance System from Scratch",
+        "desc": "Step-by-step breakdown of designing, wiring, and coding a real-world IoT attendance solution for my college lab.",
+        "date": "Jan 22, 2024"
+      }
+    ]
+  },
+  "certificates": [
+    {
+      "id": "c1",
+      "title": "Full Stack Web Development",
+      "issuer": "Udemy / Angela Yu",
+      "date": "DEC 2023",
+      "icon": "🌐",
+      "badge": "UDEMY",
+      "img": ""
+    },
+    {
+      "id": "c2",
+      "title": "Python for Data Science & ML",
+      "issuer": "Coursera / IBM",
+      "date": "MAR 2024",
+      "icon": "🐍",
+      "badge": "COURSERA",
+      "img": ""
+    },
+    {
+      "id": "c3",
+      "title": "React & Redux Masterclass",
+      "issuer": "Scrimba",
+      "date": "JAN 2024",
+      "icon": "⚛️",
+      "badge": "SCRIMBA",
+      "img": ""
+    },
+    {
+      "id": "c4",
+      "title": "Hackathon Finalist — HackBBIT",
+      "issuer": "BBIT Tech Club",
+      "date": "NOV 2023",
+      "icon": "🏆",
+      "badge": "ACHIEVEMENT",
+      "img": ""
+    },
+    {
+      "id": "c5",
+      "title": "Data Structures & Algorithms",
+      "issuer": "NPTEL / IIT",
+      "date": "APR 2024",
+      "icon": "🧮",
+      "badge": "NPTEL",
+      "img": ""
+    },
+    {
+      "id": "c6",
+      "title": "Cloud Foundations — AWS",
+      "issuer": "Amazon Web Services",
+      "date": "FEB 2024",
+      "icon": "☁️",
+      "badge": "AWS",
+      "img": ""
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1777290649572",
+      "name": "drake",
+      "email": "SREYAN25@GMAIL.COM",
+      "subject": "SSADSA",
+      "message": "ha haaa",
+      "date": "2026-04-27T11:50:49.572Z",
+      "read": false
+    },
+    {
+      "id": "m1777291638446",
+      "name": "HEHE BOI",
+      "email": "DRAKE5@GMAIL.COM",
+      "subject": "SSADSA",
+      "message": "HMM OK WORKING",
+      "date": "2026-04-27T12:07:18.447Z",
+      "read": false
+    },
+    {
+      "id": "m1777390446169",
+      "name": "drake",
+      "email": "SREYAN25@GMAIL.COM",
+      "subject": "ADADha",
+      "message": "haa haaa",
+      "date": "2026-04-28T15:34:06.170Z",
+      "read": false
+    }
+  ],
+  "admin": {
+    "username": "sreyan",
+    "passwordHash": "62626974403230323400"
+  },
+  "analytics": {
+    "totalVisits": 27,
+    "lastVisit": "2026-04-28T15:33:47.340Z",
+    "visitLog": [
+      {
+        "timestamp": "2026-04-27T11:50:09.078Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T11:50:17.323Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T11:52:17.988Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T12:02:49.545Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T12:02:50.432Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T12:06:17.576Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T12:06:27.173Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T12:06:34.743Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T12:09:22.960Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T17:08:13.890Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T17:17:58.070Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T17:40:21.516Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T17:42:39.920Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T17:52:16.705Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:05:51.956Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:13:31.530Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:13:54.348Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:20:22.626Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:22:15.420Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:37:38.860Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:55:23.358Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:56:01.588Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:56:30.311Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T18:56:31.530Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T19:04:42.439Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-27T19:10:20.140Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      },
+      {
+        "timestamp": "2026-04-28T15:33:47.340Z",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36",
+        "ip": "::1"
+      }
+    ]
+  }
+}
