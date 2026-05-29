@@ -23,6 +23,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <style>
     /* ===== RESET & VARIABLES ===== */
+    .preload * {
+      transition: none !important;
+    }
+
     *,
     *::before,
     *::after {
@@ -3005,7 +3009,7 @@
   </style>
 </head>
 
-<body>
+<body class="preload">
   <!-- Hidden Admin Trigger — triple-click bottom-left corner -->
   <button id="admin-trigger" aria-label="Admin access" title=""></button>
 
@@ -3074,7 +3078,7 @@
         <div class="system-tag">ARCH_USER_PROFILE</div>
         <div class="avatar-wrapper" id="avatar-wrapper" title="Click to change photo (admin only)">
           <img id="avatar-img"
-            src="my_profile_pic.jpg"
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23111'/%3E%3Ccircle cx='60' cy='45' r='26' fill='%23222'/%3E%3Cellipse cx='60' cy='105' rx='42' ry='35' fill='%23222'/%3E%3Ctext x='60' y='57' text-anchor='middle' font-size='28' font-family='monospace' fill='%23f5c518'%3ESM%3C/text%3E%3C/svg%3E"
             alt="Sreyan Mandal" />
           <div class="avatar-edit-hint">📷 Change Photo</div>
           <div class="avatar-status"><span class="status-dot"></span>SYSTEM_ONLINE</div>
@@ -3640,41 +3644,9 @@
           <div class="cert-reel-track" id="cert-reel-track"></div>
         </div>
 
-        <!-- Admin Add Panel — visible only when logged in -->
-        <div id="cert-admin-panel">
-          <div class="cert-admin-title">✏ ADD / MANAGE CERTIFICATES</div>
-          <div class="cert-form-grid">
-            <div class="form-group">
-              <label class="form-label" for="cert-title-inp">// CERT_TITLE</label>
-              <input class="form-input" type="text" id="cert-title-inp" placeholder="Certificate title..." />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="cert-issuer-inp">// ISSUER</label>
-              <input class="form-input" type="text" id="cert-issuer-inp" placeholder="Issuing organization..." />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="cert-date-inp">// DATE</label>
-              <input class="form-input" type="text" id="cert-date-inp" placeholder="e.g. APR 2025" />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="cert-icon-inp">// ICON (emoji)</label>
-              <input class="form-input" type="text" id="cert-icon-inp" placeholder="🏆" maxlength="4" />
-            </div>
-            <div class="form-group" style="grid-column:1/-1">
-              <label class="form-label" for="cert-badge-inp">// BADGE</label>
-              <input class="form-input" type="text" id="cert-badge-inp" placeholder="e.g. COURSERA, NPTEL, UDEMY..." />
-            </div>
-            <div class="form-group" style="grid-column:1/-1">
-              <label class="form-label">// CERT IMAGE (optional)</label>
-              <button class="eb-btn export" onclick="triggerCertImg()" style="padding:10px 18px;font-size:10px;">📷
-                Upload Image</button>
-              <input type="file" id="cert-img-file" accept="image/*" style="display:none" />
-              <div id="cert-img-preview"
-                style="margin-top:6px;font-family:var(--font-mono);font-size:9px;color:var(--text3);"></div>
-            </div>
-          </div>
-          <button class="btn-primary" style="margin-top:14px" onclick="addCertificate()">⚡ ADD CERTIFICATE</button>
-          <div id="cert-list-admin" class="cert-list-admin"></div>
+        <!-- ── Static instructions panel (no server / localStorage needed) ── -->
+        <div id="cert-admin-panel" style="display:none">
+          <!-- removed: dynamic add/delete panel (used localStorage, browser-specific) -->
         </div>
       </section>
 
@@ -3949,8 +3921,10 @@
         }
       });
     }, { threshold: .08 });
-    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-    window.addEventListener('load', () => { setTimeout(() => { document.querySelectorAll('.skill-fill').forEach(b => b.style.width = b.dataset.width + '%'); }, 500); });
+
+    window.addEventListener('load', () => {
+      setTimeout(() => { document.querySelectorAll('.skill-fill').forEach(b => b.style.width = b.dataset.width + '%'); }, 500);
+    });
 
     /* ===================== COUNTER ===================== */
     function animateCounter(el, target, suffix = '+', dur = 1800) {
@@ -3966,8 +3940,6 @@
         statsObs.disconnect();
       }
     }, { threshold: .2 });
-    const statsEl = document.querySelector('.hero-stats');
-    if (statsEl) statsObs.observe(statsEl);
 
     /* ===================== NAV ACTIVE ===================== */
     const navItems = document.querySelectorAll('.nav-item');
@@ -3975,7 +3947,14 @@
     const navObs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) navItems.forEach(n => n.classList.toggle('active', n.dataset.section === e.target.id)); });
     }, { rootMargin: '-40% 0px -50% 0px' });
-    sections.forEach(s => navObs.observe(s));
+
+    // Defer observing until DOM content is fully loaded and text edits are applied
+    function initObservers() {
+      document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+      const statsEl = document.querySelector('.hero-stats');
+      if (statsEl) statsObs.observe(statsEl);
+      sections.forEach(s => navObs.observe(s));
+    }
 
     /* ===================== NAV CLICK — PREVENT HORIZONTAL SCROLL ===================== */
     navItems.forEach(link => {
@@ -4001,21 +3980,89 @@
       }, { passive: true });
     })();
 
-    /* ===================== CERTIFICATES ===================== */
-    const DEFAULT_CERTS = [
-      { id: 'c1', title: 'Full Stack Web Development', issuer: 'Udemy / Angela Yu', date: 'DEC 2023', icon: '🌐', badge: 'UDEMY', img: '' },
-      { id: 'c2', title: 'Python for Data Science & ML', issuer: 'Coursera / IBM', date: 'MAR 2024', icon: '🐍', badge: 'COURSERA', img: '' },
-      { id: 'c3', title: 'React & Redux Masterclass', issuer: 'Scrimba', date: 'JAN 2024', icon: '⚛️', badge: 'SCRIMBA', img: '' },
-      { id: 'c4', title: 'Hackathon Finalist — HackBBIT', issuer: 'BBIT Tech Club', date: 'NOV 2023', icon: '🏆', badge: 'ACHIEVEMENT', img: '' },
-      { id: 'c5', title: 'Data Structures & Algorithms', issuer: 'NPTEL / IIT', date: 'APR 2024', icon: '🧮', badge: 'NPTEL', img: '' },
-      { id: 'c6', title: 'Cloud Foundations — AWS', issuer: 'Amazon Web Services', date: 'FEB 2024', icon: '☁️', badge: 'AWS', img: '' },
+    /* ===================== CERTIFICATES =====================
+     *
+     *  HOW TO ADD / EDIT CERTIFICATES (GitHub Pages safe):
+     *  ─────────────────────────────────────────────────────
+     *  1. Place your certificate image files inside the
+     *     "certificates/" folder next to this HTML file.
+     *     Example:  certificates/cert1.jpg
+     *               certificates/python_ibm.png
+     *               certificates/aws_cloud.jpg
+     *
+     *  2. Edit the CERTIFICATES array below.
+     *     For each entry:
+     *       id     – any unique string
+     *       title  – certificate / achievement name
+     *       issuer – organisation / platform
+     *       date   – e.g. "APR 2025"
+     *       icon   – emoji shown when no image is set (leave img empty)
+     *       badge  – short label shown on the card ribbon
+     *       img    – relative path to image, e.g. "certificates/cert1.jpg"
+     *                Leave as '' to show the emoji icon instead.
+     *
+     *  3. Save the file and push to GitHub. Done — no server needed.
+     * ============================================================ */
+    const CERTIFICATES = [
+      {
+        id: 'c1',
+        title: 'Full Stack Web Development',
+        issuer: 'Udemy / Angela Yu',
+        date: 'DEC 2023',
+        icon: '🌐',
+        badge: 'UDEMY',
+        img: ''   // e.g. 'certificates/fullstack_udemy.jpg'
+      },
+      {
+        id: 'c2',
+        title: 'Python for Data Science & ML',
+        issuer: 'Coursera / IBM',
+        date: 'MAR 2024',
+        icon: '🐍',
+        badge: 'COURSERA',
+        img: ''   // e.g. 'certificates/python_ibm.jpg'
+      },
+      {
+        id: 'c3',
+        title: 'React & Redux Masterclass',
+        issuer: 'Scrimba',
+        date: 'JAN 2024',
+        icon: '⚛️',
+        badge: 'SCRIMBA',
+        img: ''   // e.g. 'certificates/react_scrimba.jpg'
+      },
+      {
+        id: 'c4',
+        title: 'Hackathon Finalist — HackBBIT',
+        issuer: 'BBIT Tech Club',
+        date: 'NOV 2023',
+        icon: '🏆',
+        badge: 'ACHIEVEMENT',
+        img: ''   // e.g. 'certificates/hackbbit.jpg'
+      },
+      {
+        id: 'c5',
+        title: 'Data Structures & Algorithms',
+        issuer: 'NPTEL / IIT',
+        date: 'APR 2024',
+        icon: '🧮',
+        badge: 'NPTEL',
+        img: ''   // e.g. 'certificates/dsa_nptel.jpg'
+      },
+      {
+        id: 'c6',
+        title: 'Cloud Foundations — AWS',
+        issuer: 'Amazon Web Services',
+        date: 'FEB 2024',
+        icon: '☁️',
+        badge: 'AWS',
+        img: ''   // e.g. 'certificates/aws_cloud.jpg'
+      },
     ];
-    let certificates = [];
-    let pendingCertImg = '';
 
     function buildCertCard(cert) {
       const imgContent = cert.img
-        ? `<img src="${cert.img}" alt="${cert.title}">`
+        ? `<img src="${cert.img}" alt="${cert.title}" onerror="this.style.display='none';this.nextSibling.style.display='block'"><span style="font-size:38px;display:none">${cert.icon || '🏆'}</span>`
         : `<span style="font-size:38px">${cert.icon || '🏆'}</span>`;
       return `<div class="cert-card">
         <div class="cert-img-wrap">${imgContent}</div>
@@ -4029,84 +4076,17 @@
     function renderCertReel() {
       const track = document.getElementById('cert-reel-track');
       if (!track) return;
-      const html = certificates.map(buildCertCard).join('');
+      const html = CERTIFICATES.map(buildCertCard).join('');
       track.innerHTML = html + html; // duplicate for seamless loop
-      track.style.animationDuration = Math.max(20, certificates.length * 5) + 's';
-    }
-
-    function renderCertAdminList() {
-      const list = document.getElementById('cert-list-admin');
-      if (!list) return;
-      if (!certificates.length) {
-        list.innerHTML = '<div style="font-family:var(--font-mono);font-size:10px;color:var(--text3);padding:16px 0">// No certificates yet — add one above</div>';
-        return;
-      }
-      list.innerHTML = certificates.map(c => `
-        <div class="cert-list-item">
-          <span style="font-size:20px">${c.icon || '🏆'}</span>
-          <div class="cert-list-item-info">
-            <div class="cert-list-item-title">${c.title}</div>
-            <div class="cert-list-item-sub">${c.issuer} · ${c.date}</div>
-          </div>
-          <button class="cert-del-btn" onclick="deleteCertificate('${c.id}')">🗑 REMOVE</button>
-        </div>`).join('');
-    }
-
-    function saveCertificates() {
-      localStorage.setItem('sm_certificates', JSON.stringify(certificates));
+      track.style.animationDuration = Math.max(20, CERTIFICATES.length * 5) + 's';
     }
 
     function loadCertificates() {
-      const VER = 'v4';
-      if (localStorage.getItem('sm_cert_ver') !== VER) {
-        localStorage.removeItem('sm_certificates');
-        localStorage.setItem('sm_cert_ver', VER);
-      }
-      const saved = localStorage.getItem('sm_certificates');
-      try { certificates = saved ? JSON.parse(saved) : [...DEFAULT_CERTS]; }
-      catch (e) { certificates = [...DEFAULT_CERTS]; }
       renderCertReel();
-      renderCertAdminList();
     }
-
-    function addCertificate() {
-      const title = document.getElementById('cert-title-inp').value.trim();
-      const issuer = document.getElementById('cert-issuer-inp').value.trim();
-      const date = document.getElementById('cert-date-inp').value.trim();
-      const icon = document.getElementById('cert-icon-inp').value.trim() || '🏆';
-      const badge = document.getElementById('cert-badge-inp').value.trim() || 'CERT';
-      if (!title || !issuer) { showToast('Please fill in Title and Issuer.', 'ERROR'); return; }
-      certificates.push({ id: 'c' + Date.now(), title, issuer, date, icon, badge, img: pendingCertImg });
-      saveCertificates(); renderCertReel(); renderCertAdminList();
-      ['cert-title-inp', 'cert-issuer-inp', 'cert-date-inp', 'cert-icon-inp', 'cert-badge-inp']
-        .forEach(id => document.getElementById(id).value = '');
-      document.getElementById('cert-img-preview').textContent = '';
-      pendingCertImg = '';
-      showToast('Certificate added!', 'OK');
-    }
-
-    function deleteCertificate(id) {
-      certificates = certificates.filter(c => c.id !== id);
-      saveCertificates(); renderCertReel(); renderCertAdminList();
-      showToast('Certificate removed.', 'INFO');
-    }
-
-    function triggerCertImg() { document.getElementById('cert-img-file').click(); }
-
-    document.getElementById('cert-img-file').addEventListener('change', function () {
-      const file = this.files[0]; if (!file) return;
-      if (file.size > 5 * 1024 * 1024) { showToast('Max 5MB.', 'ERROR'); return; }
-      const reader = new FileReader();
-      reader.onload = ev => {
-        pendingCertImg = ev.target.result;
-        document.getElementById('cert-img-preview').textContent = '✅ Image ready: ' + file.name;
-      };
-      reader.readAsDataURL(file); this.value = '';
-    });
 
     function syncCertPanel() {
-      const panel = document.getElementById('cert-admin-panel');
-      if (panel) panel.classList.toggle('visible', isLoggedIn());
+      // No dynamic admin panel needed — certificates are edited directly in HTML
     }
 
     /* ===================== MOBILE MENU ===================== */
@@ -4212,26 +4192,40 @@
     document.getElementById('admin-pass').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
     document.getElementById('admin-user').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('admin-pass').focus(); });
 
-    function attemptLogin() {
+    async function attemptLogin() {
       const u = document.getElementById('admin-user').value.trim();
       const p = document.getElementById('admin-pass').value;
       const errEl = document.getElementById('admin-err');
       const btn = document.getElementById('login-btn');
-      if (u === ADMIN_USER && p === ADMIN_PASS) {
-        btn.textContent = '✅ AUTHENTICATED';
-        errEl.style.color = 'var(--green)';
-        errEl.textContent = 'Access granted. Loading edit mode...';
-        sessionStorage.setItem('sm_admin', '1');
-        setTimeout(() => { closeAdminModal(); enableEditMode(); }, 900);
-      } else {
+
+      // First check credentials locally (fast path)
+      if (u !== ADMIN_USER || p !== ADMIN_PASS) {
         errEl.style.color = 'var(--red)';
         errEl.textContent = '// ACCESS_DENIED — Invalid credentials';
         document.getElementById('admin-pass').value = '';
         btn.textContent = '⚡ AUTHENTICATE';
-        // shake animation
         btn.style.animation = 'none';
         setTimeout(() => { btn.style.animation = ''; document.getElementById('admin-pass').focus(); }, 100);
+        return;
       }
+
+      btn.textContent = '⏳ AUTHENTICATING...';
+      btn.disabled = true;
+
+      // Also call the API to get a real token (needed for server image uploads & save-source)
+      try {
+        await PortfolioAPI.login(u, p);
+      } catch (e) {
+        // Server may be offline — still allow local edit mode, but saves will fallback to localStorage
+        console.warn('[ADMIN] API login failed (server offline?). Local-only edit mode.');
+      }
+
+      btn.textContent = '✅ AUTHENTICATED';
+      btn.disabled = false;
+      errEl.style.color = 'var(--green)';
+      errEl.textContent = 'Access granted. Loading edit mode...';
+      sessionStorage.setItem('sm_admin', '1');
+      setTimeout(() => { closeAdminModal(); enableEditMode(); }, 900);
     }
     function isLoggedIn() { return sessionStorage.getItem('sm_admin') === '1'; }
 
@@ -4265,109 +4259,22 @@
     }
 
     /* ===================== SAVE EDITS ===================== */
-    function saveEdits() {
-      const data = {};
-      // Text edits
-      document.querySelectorAll('[data-editable]').forEach(el => {
-        data[el.dataset.editable] = el.innerHTML;
-      });
-      // Avatar
-      const avatarSrc = document.getElementById('avatar-img').src;
-      if (avatarSrc && !avatarSrc.includes('data:image/svg')) data['__avatar'] = avatarSrc;
-      // Project images
-      document.querySelectorAll('[data-img-zone]').forEach(el => {
-        const img = el.querySelector('img.project-img-zone');
-        if (img) data['__img__' + el.dataset.imgZone] = img.src;
-      });
-      localStorage.setItem('sm_portfolio_edits', JSON.stringify(data));
-      showToast('Changes saved! They will persist on next load.', 'OK');
-    }
-
-    function loadSavedEdits() {
-      const saved = localStorage.getItem('sm_portfolio_edits');
-      if (!saved) return;
-      try {
-        const data = JSON.parse(saved);
-        Object.entries(data).forEach(([key, val]) => {
-          if (key === '__avatar') { document.getElementById('avatar-img').src = val; return; }
-          if (key.startsWith('__img__')) {
-            const zone = key.replace('__img__', '');
-            const el = document.querySelector('[data-img-zone="' + zone + '"]');
-            if (el) applyImgToZone(el, val);
-            return;
-          }
-          const el = document.querySelector('[data-editable="' + key + '"]');
-          if (el) el.innerHTML = val;
-        });
-      } catch (ex) { }
-    }
-
-    // Auto-load on page load for visitors too
-    window.addEventListener('DOMContentLoaded', () => {
-      loadSavedEdits();
-      loadCertificates();
-      syncCertPanel();
-      if (isLoggedIn()) enableEditMode();
-    });
-
-    /* ===================== IMAGE UPLOAD ===================== */
-    let currentImgTarget = null;
-    const fileInput = document.getElementById('img-file-input');
-
-    function handleImgZoneClick(zone, el) {
-      if (!isLoggedIn()) return;
-      currentImgTarget = el;
-      fileInput.click();
-    }
-
-    function onAvatarClick() {
-      if (!isLoggedIn()) return;
-      currentImgTarget = 'avatar';
-      fileInput.click();
-    }
-
-    fileInput.addEventListener('change', function () {
-      const file = this.files[0];
-      if (!file) return;
-      if (file.size > 5 * 1024 * 1024) { showToast('Image too large. Max 5MB.', 'ERROR'); return; }
-      const reader = new FileReader();
-      reader.onload = function (ev) {
-        const src = ev.target.result;
-        if (currentImgTarget === 'avatar') {
-          document.getElementById('avatar-img').src = src;
-          showToast('Profile photo updated! Click Save to persist.', 'OK');
-        } else if (currentImgTarget) {
-          applyImgToZone(currentImgTarget, src);
-          showToast('Image updated! Click Save to persist.', 'OK');
-        }
-        currentImgTarget = null;
-        fileInput.value = '';
-      };
-      reader.readAsDataURL(file);
-    });
-
-    function applyImgToZone(el, src) {
-      // Remove placeholder text/icon if present
-      el.querySelectorAll('.project-icon,.blog-placeholder').forEach(p => p.style.display = 'none');
-      let img = el.querySelector('img.project-img-zone');
-      if (!img) { img = document.createElement('img'); img.className = 'project-img-zone'; img.alt = 'Project image'; el.insertBefore(img, el.firstChild); }
-      img.src = src;
-    }
-
-    /* ===================== EXPORT HTML ===================== */
-    function exportHTML() {
-      // Collect all current editable content
+    // Generates the full baked-in HTML snapshot (same logic as exportHTML but returns a string)
+    function generateBakedHTML() {
       const cloneDoc = document.documentElement.cloneNode(true);
-      // Remove edit-mode artifacts
+      // Hide admin-only UI
       cloneDoc.querySelector('#edit-bar') && (cloneDoc.querySelector('#edit-bar').style.display = 'none');
       cloneDoc.querySelector('#admin-modal') && (cloneDoc.querySelector('#admin-modal').style.display = 'none');
-      // Set all contenteditable=false
+      // Remove contenteditable
       cloneDoc.querySelectorAll('[data-editable]').forEach(el => { el.removeAttribute('contenteditable'); });
-      // Bake in the current text content
+      // Bake in text edits
       document.querySelectorAll('[data-editable]').forEach(orig => {
         const key = orig.dataset.editable;
         const cloneEl = cloneDoc.querySelector('[data-editable="' + key + '"]');
-        if (cloneEl) cloneEl.innerHTML = orig.innerHTML;
+        if (cloneEl) {
+          cloneEl.innerHTML = orig.innerHTML;
+          if (orig.hasAttribute('data-text')) cloneEl.setAttribute('data-text', orig.innerText);
+        }
       });
       // Bake in avatar
       const avatarSrc = document.getElementById('avatar-img').src;
@@ -4387,13 +4294,198 @@
           }
         }
       });
-      const html = '<!DOCTYPE html>\n' + cloneDoc.outerHTML;
+      // Reset dynamic states
+      cloneDoc.querySelectorAll('.reveal.visible').forEach(el => el.classList.remove('visible'));
+      cloneDoc.querySelectorAll('.stat-num.counter').forEach(el => el.textContent = '0+');
+      cloneDoc.querySelectorAll('.skill-fill, .skill-card-fill').forEach(el => el.style.width = '0%');
+      cloneDoc.querySelectorAll('.nav-item.active').forEach(el => el.classList.remove('active'));
+      // Bake in certificates
+      let bakedDb = cloneDoc.querySelector('#baked-db');
+      if (!bakedDb) {
+        bakedDb = document.createElement('script');
+        bakedDb.id = 'baked-db';
+        bakedDb.type = 'application/json';
+        const cloneBody = cloneDoc.querySelector('body');
+        if (cloneBody) cloneBody.appendChild(bakedDb);
+      }
+      bakedDb.textContent = JSON.stringify(certificates);
+      // Restore edit-bar and modal display (remove inline display:none so they re-appear next edit session)
+      const cloneEditBar = cloneDoc.querySelector('#edit-bar');
+      if (cloneEditBar) cloneEditBar.style.removeProperty('display');
+      const cloneModal = cloneDoc.querySelector('#admin-modal');
+      if (cloneModal) cloneModal.style.removeProperty('display');
+      return '<!DOCTYPE html>\n' + cloneDoc.outerHTML;
+    }
+
+    async function saveEdits() {
+      showToast('⏳ Saving changes to source file...', 'INFO');
+      const token = PortfolioAPI.getToken();
+
+      if (token) {
+        // Server is available — write directly to sreyan_portfolio.html on disk
+        try {
+          const html = generateBakedHTML();
+          const res = await fetch('/api/admin/save-source', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+            body: JSON.stringify({ html })
+          });
+          const result = await res.json();
+          if (result.success) {
+            showToast('✅ Source file saved! Run git push to deploy to GitHub Pages.', 'OK');
+            return;
+          } else {
+            throw new Error(result.error || 'Server error');
+          }
+        } catch (err) {
+          console.error('[SAVE] Server save failed:', err);
+          showToast('⚠️ Server save failed: ' + err.message + '. Falling back to localStorage.', 'INFO');
+        }
+      }
+
+      // Fallback: localStorage (works on GitHub Pages but is browser-local)
+      const data = {};
+      document.querySelectorAll('[data-editable]').forEach(el => { data[el.dataset.editable] = el.innerHTML; });
+      const avatarSrc = document.getElementById('avatar-img').src;
+      if (avatarSrc && !avatarSrc.includes('data:image/svg')) data['__avatar'] = avatarSrc;
+      document.querySelectorAll('[data-img-zone]').forEach(el => {
+        const img = el.querySelector('img.project-img-zone');
+        if (img) data['__img__' + el.dataset.imgZone] = img.src;
+      });
+      localStorage.setItem('sm_portfolio_edits', JSON.stringify(data));
+      showToast('Saved to localStorage (server offline). Start the server locally to persist to source.', 'INFO');
+    }
+
+    function loadSavedEdits() {
+      // Don't load local edits if this is a baked exported file
+      if (document.body.dataset.exported === 'true') return;
+
+      const saved = localStorage.getItem('sm_portfolio_edits');
+      if (!saved) return;
+      try {
+        const data = JSON.parse(saved);
+        Object.entries(data).forEach(([key, val]) => {
+          if (key === '__avatar') { document.getElementById('avatar-img').src = val; return; }
+          if (key.startsWith('__img__')) {
+            const zone = key.replace('__img__', '');
+            const el = document.querySelector('[data-img-zone="' + zone + '"]');
+            if (el) applyImgToZone(el, val);
+            return;
+          }
+          const el = document.querySelector('[data-editable="' + key + '"]');
+          if (el) {
+            el.innerHTML = val;
+            if (el.hasAttribute('data-text')) el.setAttribute('data-text', el.innerText);
+          }
+        });
+      } catch (ex) { }
+    }
+
+    // Auto-load on page load for visitors too
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedEdits();
+      loadCertificates();
+      syncCertPanel();
+
+      // Only auto-enable edit mode if this is NOT an exported file
+      if (document.body.dataset.exported !== 'true' && isLoggedIn()) {
+        enableEditMode();
+      }
+
+      // Allow browser to render first frame without transitions, then trigger animations
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          document.body.classList.remove('preload');
+          initObservers();
+        });
+      });
+    });
+
+    /* ===================== IMAGE UPLOAD ===================== */
+    let currentImgTarget = null;
+    const fileInput = document.getElementById('img-file-input');
+
+    function handleImgZoneClick(zone, el) {
+      if (!isLoggedIn()) return;
+      currentImgTarget = el;
+      fileInput.click();
+    }
+
+    function onAvatarClick() {
+      if (!isLoggedIn()) return;
+      currentImgTarget = 'avatar';
+      fileInput.click();
+    }
+
+    fileInput.addEventListener('change', async function () {
+      const file = this.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) { showToast('Image too large. Max 5MB.', 'ERROR'); return; }
+
+      const token = PortfolioAPI.getToken();
+      const savedTarget = currentImgTarget;
+      currentImgTarget = null;
+      fileInput.value = '';
+
+      if (token) {
+        // Upload to server → get a real URL (works across all browsers/visitors)
+        showToast('⏳ Uploading image to server...', 'INFO');
+        try {
+          const reader = new FileReader();
+          const base64 = await new Promise((res, rej) => {
+            reader.onload = e => res(e.target.result);
+            reader.onerror = rej;
+            reader.readAsDataURL(file);
+          });
+          const result = await PortfolioAPI.uploadImage(file.name, base64);
+          const src = result.url; // e.g. /uploads/1234_abc.jpg
+          if (savedTarget === 'avatar') {
+            document.getElementById('avatar-img').src = src;
+            showToast('✅ Profile photo uploaded! Click Save to bake into source.', 'OK');
+          } else if (savedTarget) {
+            applyImgToZone(savedTarget, src);
+            showToast('✅ Image uploaded! Click Save to bake into source.', 'OK');
+          }
+          return;
+        } catch (err) {
+          console.warn('[IMG] Server upload failed, using base64 fallback:', err);
+          showToast('⚠️ Server upload failed. Using local base64 (start server for persistent images).', 'INFO');
+        }
+      }
+
+      // Fallback: use base64 data URL directly (localStorage-only, browser-specific)
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        const src = ev.target.result;
+        if (savedTarget === 'avatar') {
+          document.getElementById('avatar-img').src = src;
+          showToast('Profile photo set (local only). Start server for persistent uploads.', 'INFO');
+        } else if (savedTarget) {
+          applyImgToZone(savedTarget, src);
+          showToast('Image set (local only). Start server for persistent uploads.', 'INFO');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function applyImgToZone(el, src) {
+      // Remove placeholder text/icon if present
+      el.querySelectorAll('.project-icon,.blog-placeholder').forEach(p => p.style.display = 'none');
+      let img = el.querySelector('img.project-img-zone');
+      if (!img) { img = document.createElement('img'); img.className = 'project-img-zone'; img.alt = 'Project image'; el.insertBefore(img, el.firstChild); }
+      img.src = src;
+    }
+
+    /* ===================== EXPORT HTML (manual download backup) ===================== */
+    function exportHTML() {
+      // generateBakedHTML() is defined in the SAVE EDITS section above
+      const html = generateBakedHTML();
       const blob = new Blob([html], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url; a.download = 'sreyan_portfolio_updated.html';
       a.click(); URL.revokeObjectURL(url);
-      showToast('HTML exported! The updated file has been downloaded.', 'OK');
+      showToast('HTML exported & downloaded as backup!', 'OK');
     }
 
     /* ===================== CONSOLE EGG ===================== */
